@@ -1,0 +1,72 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0fffffff"
+    tools:context="com.alpaca.alpacarant.MainPage">
+
+    <!-- Main Screen -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_content">
+    </RelativeLayout>
+
+    <!-- Drawer panel -->
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_panel"
+        android:layout_gravity="start"
+        android:background="@color/material_blue_grey_800">
+        <!-- Profile box -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/profile_box"
+            android:gravity="center_vertical"
+            android:background="@color/material_blue_grey_800">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/icon"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_unknown_profile"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/icon"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Justin"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#fff"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yeo"
+                    android:textSize="16sp"
+                    android:textColor="#FFF"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Navigation listview -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_list"
+            android:layout_below="@+id/profile_box"
+            android:choiceMode="singleChoice"
+            android:background="#FFFFFF">
+        </ListView>
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
