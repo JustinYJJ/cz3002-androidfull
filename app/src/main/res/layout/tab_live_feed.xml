@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
+    <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Live Feed"
-        android:id="@+id/textView3" />
+        android:layout_height="match_parent"
+        android:id="@+id/listViewRant"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1" />
 </LinearLayout>

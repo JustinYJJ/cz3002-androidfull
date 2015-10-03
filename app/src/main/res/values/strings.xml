@@ -49,4 +49,5 @@
         <item>420</item>
         <item>600</item>
     </string-array>
+    <string name="title_activity_individual_rant">IndividualRant</string>
 </resources>

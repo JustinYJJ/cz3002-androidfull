@@ -1,5 +1,7 @@
 package com.alpaca.alpacarant;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -11,11 +13,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +70,7 @@ public class MainPage extends ActionBarActivity {
         listFragments.add(new SideHome());
         listFragments.add(new SideSearch());
         listFragments.add(new SideSettings());
+        listFragments.add(new SideLogout());
 
         //load first fragment as default
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -99,19 +113,114 @@ public class MainPage extends ActionBarActivity {
     }
 
     public void onPostRantButtonClick(View v){
+        String annonymous;
+
         //Get rant text
         EditText editRant = (EditText) findViewById(R.id.editRant);
         String rant = editRant.getText().toString();
 
         //Get value of spinner
         Spinner spinnerLifetime = (Spinner) findViewById(R.id.spinnerLifetime);
-        String lifetime = spinnerLifetime.getSelectedItem().toString();
+        String lifetime = "" + (Integer.parseInt(spinnerLifetime.getSelectedItem().toString()) * 3600);
 
         Spinner spinnerViewtime = (Spinner) findViewById(R.id.spinnerViewtime);
         String viewtime = spinnerViewtime.getSelectedItem().toString();
 
-        Log.i("Rant: ", rant);
-        Log.i("Life: ", lifetime + " " + viewtime);
+        CheckBox checkBoxAnnonymous = (CheckBox) findViewById(R.id.checkBoxAnnonymous);
+        if (checkBoxAnnonymous.isChecked()){
+            annonymous = "true";
+        }
+        else{
+            annonymous = "false";
+        }
+
+        sendPostRantRequest(lifetime, viewtime, annonymous, rant);
+    }
+
+    private void sendPostRantRequest(String lifetime, String viewtime, String annonymous, String rant) {
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                String paramLifeTime = params[0];
+                String paramViewTime = params[1];
+                String paramAnnonymous = params[2];
+                String paramRant = params[3];
+
+                //instantiates httpclient to make request
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+
+                //url with the post data
+                HttpPost httpPost = new HttpPost("http://nturant.me/rant/");
+                httpPost.setHeader("accept", "application/json");
+
+                //create values to be passed into POST request
+                BasicNameValuePair lifetimeBasicNameValuePair = new BasicNameValuePair("lifetime", paramLifeTime);
+                BasicNameValuePair viewtimeBasicNameValuePair = new BasicNameValuePair("viewtime", paramViewTime);
+                BasicNameValuePair annonymousBasicNameValuePair = new BasicNameValuePair("annonymous", paramAnnonymous);
+                BasicNameValuePair contentBasicNameValuePair = new BasicNameValuePair("content", paramRant);
+
+                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+                nameValuePairList.add(lifetimeBasicNameValuePair);
+                nameValuePairList.add(viewtimeBasicNameValuePair);
+                nameValuePairList.add(annonymousBasicNameValuePair);
+                nameValuePairList.add(contentBasicNameValuePair);
+
+                try{
+                    //convert value to UrlEncodedFormEntity
+                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                    //hands the entity to the request
+                    httpPost.setEntity(urlEncodedFormEntity);
+
+                    try{
+                        HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
+
+                        //get HttpResponse content
+                        InputStream inputStream = httpResponse.getEntity().getContent();
+
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        String bufferedStrChunk = null;
+
+                        while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                            stringBuilder.append(bufferedStrChunk);
+                        }
+
+                        System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        if (httpResponse.getStatusLine().getStatusCode() == 200){
+                            System.out.println("Rant posted");
+                        }
+
+                        if (httpResponse.getEntity() != null){
+                            Log.i("Entity: ", "Not null");
+                            httpResponse.getEntity().consumeContent();
+                        }
+
+                        return stringBuilder.toString();
+                    }   catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                startActivity(new Intent(getApplicationContext(), MainPage.class));
+            }
+        }
+
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(lifetime, viewtime, annonymous, rant);
     }
 
     @Override
