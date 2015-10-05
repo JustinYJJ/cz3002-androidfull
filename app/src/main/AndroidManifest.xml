@@ -38,6 +38,10 @@
             android:name=".Register"
             android:label="@string/title_activity_register" >
         </activity>
+        <activity
+            android:name=".MessageFriend"
+            android:label="@string/title_activity_message_friend" >
+        </activity>
     </application>
 
 </manifest>

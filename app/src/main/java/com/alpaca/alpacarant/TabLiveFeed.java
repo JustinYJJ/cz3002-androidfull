@@ -83,6 +83,9 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 
 						JSONArray jArray = new JSONArray(result);
 
+						Log.i("Response: ", stringBuilder.toString());
+						Log.i("Status: ", "" + httpResponse.getStatusLine().getStatusCode());
+
 						return jArray;
 					} catch (Exception e) {
 						e.printStackTrace();

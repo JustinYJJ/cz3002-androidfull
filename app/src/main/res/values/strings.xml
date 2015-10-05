@@ -50,4 +50,5 @@
         <item>600</item>
     </string-array>
     <string name="title_activity_individual_rant">IndividualRant</string>
+    <string name="title_activity_message_friend">MessageFriend</string>
 </resources>

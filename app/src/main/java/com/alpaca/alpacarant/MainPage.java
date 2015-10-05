@@ -137,6 +137,10 @@ public class MainPage extends ActionBarActivity {
         sendPostRantRequest(lifetime, viewtime, annonymous, rant);
     }
 
+    public void onPostMessageButtonClick(View v){
+        startActivity(new Intent(getApplicationContext(), MessageFriend.class));
+    }
+
     private void sendPostRantRequest(String lifetime, String viewtime, String annonymous, String rant) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
