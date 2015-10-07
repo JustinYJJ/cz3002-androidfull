@@ -38,6 +38,7 @@ import java.util.List;
  * Created by justinyeo on 16/9/15.
  */
 public class TabLiveFeed extends Fragment implements RantListAdapter.customButtonListener {
+	private ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,7 +100,6 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 			@Override
 			protected void onPostExecute(JSONArray result) {
 				super.onPostExecute(result);
-				ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 
 				try {
 
@@ -138,6 +138,20 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	@Override
 	public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
 		sendViewRantRequest(value, v, position);
+
+		mylist.get(position).put("contentPartial", value.get("content"));
+		RantListAdapter adapter = new RantListAdapter(v.getContext(), mylist);
+		adapter.setCustomButtonListner(TabLiveFeed.this);
+
+		// Getting a reference to listview of main.xml layout file
+		ListView listView = (ListView) v.findViewById(R.id.listViewRant);
+
+		// Setting the adapter to the listView
+		if (adapter != null) {
+			listView.setAdapter(adapter);
+		}
+		Button button = (Button) v.findViewById(R.id.buttonReadRant);
+		button.setVisibility(View.GONE);
 	}
 
 	private void sendViewRantRequest(final HashMap<String, String> value, final View v, final int position) {
@@ -209,11 +223,6 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-
-				TextView rantContent = (TextView) v.findViewById(R.id.rantContent);
-				rantContent.setText("I have read this rant");
-				Button button = (Button) v.findViewById(R.id.buttonReadRant);
-				button.setVisibility(View.GONE);
 			}
 		}
 
