@@ -139,17 +139,9 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
 		sendViewRantRequest(value, v, position);
 
-		mylist.get(position).put("contentPartial", value.get("content"));
-		RantListAdapter adapter = new RantListAdapter(v.getContext(), mylist);
-		adapter.setCustomButtonListner(TabLiveFeed.this);
+		Button button1 = (Button) v.findViewById(R.id.rantContent);
+		button1.setText("Testing");
 
-		// Getting a reference to listview of main.xml layout file
-		ListView listView = (ListView) v.findViewById(R.id.listViewRant);
-
-		// Setting the adapter to the listView
-		if (adapter != null) {
-			listView.setAdapter(adapter);
-		}
 		Button button = (Button) v.findViewById(R.id.buttonReadRant);
 		button.setVisibility(View.GONE);
 	}

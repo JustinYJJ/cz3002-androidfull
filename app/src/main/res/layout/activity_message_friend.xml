@@ -55,7 +55,8 @@
             android:layout_weight="0.24"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="20px" />
+            android:layout_marginRight="20px"
+            android:onClick="onSendMessageButtonClick" />
     </RelativeLayout>
 
 </RelativeLayout>

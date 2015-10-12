@@ -8,15 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by justinyeo on 2/10/15.
  */
-public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
+public class InboxListAdapter extends ArrayAdapter<HashMap<String, String>>{
     customButtonListener customListner;
 
     public interface customButtonListener {
@@ -30,8 +28,8 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
     private Context context;
     private ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 
-    public RantListAdapter(Context context, ArrayList<HashMap<String, String>> dataItem) {
-        super(context, R.layout.rant_listview_layout, dataItem);
+    public InboxListAdapter(Context context, ArrayList<HashMap<String, String>> dataItem) {
+        super(context, R.layout.inbox_listview_layout, dataItem);
         this.data = dataItem;
         this.context = context;
     }
@@ -42,11 +40,11 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.rant_listview_layout, null);
+            convertView = inflater.inflate(R.layout.inbox_listview_layout, null);
             viewHolder = new ViewHolder();
-            viewHolder.rantUser = (TextView) convertView.findViewById(R.id.rantUser);
-            viewHolder.rantContent = (TextView) convertView.findViewById(R.id.rantContent);
-            viewHolder.buttonRead = (Button) convertView.findViewById(R.id.buttonReadRant);
+            viewHolder.inboxUser = (TextView) convertView.findViewById(R.id.inboxUser);
+            viewHolder.inboxContent = (TextView) convertView.findViewById(R.id.inboxContent);
+            viewHolder.buttonRead = (Button) convertView.findViewById(R.id.buttonReadInbox);
             convertView.setTag(viewHolder);
         }
 
@@ -56,8 +54,8 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
 
         final HashMap<String, String> temp = getItem(position);
 
-        viewHolder.rantUser.setText(temp.get("ownername") + " posted: ");
-        viewHolder.rantContent.setText(temp.get("contentPartial"));
+        viewHolder.inboxUser.setText(temp.get("sendername") + " posted: ");
+        viewHolder.inboxContent.setText(temp.get("contentPartial"));
         viewHolder.buttonRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +69,8 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
     }
 
     public class ViewHolder {
-        TextView rantUser;
-        TextView rantContent;
+        TextView inboxUser;
+        TextView inboxContent;
         Button buttonRead;
     }
 }

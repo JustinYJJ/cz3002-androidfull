@@ -138,7 +138,11 @@ public class MainPage extends ActionBarActivity {
     }
 
     public void onPostMessageButtonClick(View v){
-        startActivity(new Intent(getApplicationContext(), MessageFriend.class));
+        EditText editRant = (EditText) findViewById(R.id.editRant);
+        String rant = editRant.getText().toString();
+        Intent intent = new Intent(getApplicationContext(), MessageFriend.class);
+        intent.putExtra("Message", rant);
+        startActivity(intent);
     }
 
     private void sendPostRantRequest(String lifetime, String viewtime, String annonymous, String rant) {

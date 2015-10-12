@@ -5,24 +5,24 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/rantUser"
+        android:id="@+id/inboxUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/rantContent"
+        android:id="@+id/inboxContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rantUser"
+        android:layout_below="@+id/inboxUser"
         android:textSize="15sp"
         android:background="#fff3f3f3" />
 
     <Button
-        android:id="@+id/buttonReadRant"
+        android:id="@+id/buttonReadInbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rantContent"
+        android:layout_below="@+id/inboxContent"
         android:text="Read more"/>
 
 </RelativeLayout>
