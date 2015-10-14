@@ -51,4 +51,5 @@
     </string-array>
     <string name="title_activity_individual_rant">IndividualRant</string>
     <string name="title_activity_message_friend">MessageFriend</string>
+    <string name="title_activity_reply_message">ReplyMessage</string>
 </resources>

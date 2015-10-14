@@ -38,7 +38,7 @@ import java.util.List;
  * Created by justinyeo on 16/9/15.
  */
 public class TabLiveFeed extends Fragment implements RantListAdapter.customButtonListener {
-	private ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+	private ArrayList<HashMap<String, String>> mylist;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +101,7 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 			protected void onPostExecute(JSONArray result) {
 				super.onPostExecute(result);
 
+				mylist = new ArrayList<HashMap<String, String>>();
 				try {
 
 					for (int i = 0; i < result.length(); i++) {
@@ -138,11 +139,13 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	@Override
 	public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
 		sendViewRantRequest(value, v, position);
+		ListView rant = (ListView) getActivity().findViewById(R.id.listViewRant);
+		View view = rant.getChildAt(position - rant.getFirstVisiblePosition());
 
-		Button button1 = (Button) v.findViewById(R.id.rantContent);
-		button1.setText("Testing");
+		TextView textRant = (TextView) view.findViewById(R.id.rantContent);
+		textRant.setText(value.get("content"));
 
-		Button button = (Button) v.findViewById(R.id.buttonReadRant);
+		Button button = (Button) view.findViewById(R.id.buttonReadRant);
 		button.setVisibility(View.GONE);
 	}
 
@@ -151,7 +154,7 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 
 			@Override
 			protected String doInBackground(HashMap<String, String>... params) {
-				/*HashMap<String, String> paramRantId = params[0];
+				HashMap<String, String> paramRantId = params[0];
 
 				//instantiates httpclient to make request
 				DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -208,7 +211,7 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 				}
 				catch (Exception e){
 					e.printStackTrace();
-				}*/
+				}
 				return null;
 			}
 

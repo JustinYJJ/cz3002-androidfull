@@ -42,6 +42,10 @@
             android:name=".MessageFriend"
             android:label="@string/title_activity_message_friend" >
         </activity>
+        <activity
+            android:name=".ReplyMessage"
+            android:label="@string/title_activity_reply_message" >
+        </activity>
     </application>
 
 </manifest>

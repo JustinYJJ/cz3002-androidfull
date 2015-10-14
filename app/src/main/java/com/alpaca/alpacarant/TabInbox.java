@@ -1,6 +1,7 @@
 package com.alpaca.alpacarant;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,12 +31,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by justinyeo on 16/9/15.
  */
 public class TabInbox extends Fragment implements InboxListAdapter.customButtonListener {
-    private ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+    private ArrayList<HashMap<String, String>> mylist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,14 +100,16 @@ public class TabInbox extends Fragment implements InboxListAdapter.customButtonL
             protected void onPostExecute(JSONArray result) {
                 super.onPostExecute(result);
 
+                mylist = new ArrayList<HashMap<String, String>>();
                 try {
 
                     for (int i = 0; i < result.length(); i++) {
                         HashMap<String, String> map = new HashMap<String, String>();
                         JSONObject name = result.getJSONObject(i);
+                        map.put("sender", name.getString("sender"));
                         map.put("sendername", name.getString("sendername"));
                         map.put("content", name.getString("content"));
-                        map.put("contentPartial", name.getString("content").substring(0, 5) + "...");
+                        map.put("contentPartial", name.getString("content").substring(0, 3) + "...");
                         map.put("messageid", name.getString("_id"));
                         mylist.add(map);
                     }
@@ -129,71 +139,73 @@ public class TabInbox extends Fragment implements InboxListAdapter.customButtonL
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
         sendViewMessageRequest(value, v, position);
+        Intent intent = new Intent(v.getContext(), ReplyMessage.class);
+        intent.putExtra("hashmap", value);
+        startActivity(intent);
     }
 
     private void sendViewMessageRequest(HashMap<String, String> value, View v, int position) {
-        class SendPostReqAsyncTask extends AsyncTask<HashMap<String, String>, Void, String>{
+        class SendPostReqAsyncTask extends AsyncTask<HashMap<String, String>, Void, String> {
 
             @Override
             protected String doInBackground(HashMap<String, String>... params) {
-				/*HashMap<String, String> paramRantId = params[0];
+                HashMap<String, String> paramRantId = params[0];
 
-				//instantiates httpclient to make request
-				DefaultHttpClient httpClient = new DefaultHttpClient();
+                //instantiates httpclient to make request
+                DefaultHttpClient httpClient = new DefaultHttpClient();
 
-				//url with the post data
-				HttpPost httpPost = new HttpPost("http://nturant.me/rant/viewRant");
-				httpPost.setHeader("accept", "application/json");
+                //url with the post data
+                HttpPost httpPost = new HttpPost("http://nturant.me/users/readmessage");
+                httpPost.setHeader("accept", "application/json");
 
-				//create values to be passed into POST request
-				BasicNameValuePair rantIdBasicNameValuePair = new BasicNameValuePair("id", paramRantId.get("rantid"));
+                //create values to be passed into POST request
+                BasicNameValuePair messageIdBasicNameValuePair = new BasicNameValuePair("msgid", paramRantId.get("messageid"));
 
-				List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-				nameValuePairList.add(rantIdBasicNameValuePair);
+                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+                nameValuePairList.add(messageIdBasicNameValuePair);
 
-				try{
-					//convert value to UrlEncodedFormEntity
-					UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+                try {
+                    //convert value to UrlEncodedFormEntity
+                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
 
-					//hands the entity to the request
-					httpPost.setEntity(urlEncodedFormEntity);
+                    //hands the entity to the request
+                    httpPost.setEntity(urlEncodedFormEntity);
 
-					try{
-						HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
+                    try {
+                        HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
 
-						//get HttpResponse content
-						InputStream inputStream = httpResponse.getEntity().getContent();
+                        //get HttpResponse content
+                        InputStream inputStream = httpResponse.getEntity().getContent();
 
-						InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
-						BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-						StringBuilder stringBuilder = new StringBuilder();
+                        StringBuilder stringBuilder = new StringBuilder();
 
-						String bufferedStrChunk = null;
+                        String bufferedStrChunk = null;
 
-						while((bufferedStrChunk = bufferedReader.readLine()) != null){
-							stringBuilder.append(bufferedStrChunk);
-						}
+                        while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                            stringBuilder.append(bufferedStrChunk);
+                        }
 
-						System.out.println(httpResponse.getStatusLine().getStatusCode());
-						if (httpResponse.getStatusLine().getStatusCode() == 200){
-							System.out.println("Rant viewed");
-							System.out.println(stringBuilder.toString());
-						}
+                        System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                            System.out.println("Message viewed");
+                            System.out.println(stringBuilder.toString());
+                        }
 
-						if (httpResponse.getEntity() != null){
-							httpResponse.getEntity().consumeContent();
-						}
+                        if (httpResponse.getEntity() != null) {
+                            httpResponse.getEntity().consumeContent();
+                        }
 
-						return stringBuilder.toString();
-					}   catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				catch (Exception e){
-					e.printStackTrace();
-				}*/
+                        return stringBuilder.toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
