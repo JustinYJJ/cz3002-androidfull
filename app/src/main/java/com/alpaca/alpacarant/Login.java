@@ -1,6 +1,5 @@
 package com.alpaca.alpacarant;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,54 +8,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Login extends ActionBarActivity {
-
     EditText editUsername, editPassword;
+
+    //create local instance of cookie store
+    CookieStore cookieStore = new BasicCookieStore();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
     }
 
     public void onLoginButtonClick(View v) {
@@ -83,14 +67,12 @@ public class Login extends ActionBarActivity {
                 String paramUsername = params[0];
                 String paramPassword = params[1];
 
-                //create local instance of cookie store
-                CookieStore cookieStore = new BasicCookieStore();
-
                 //create local HTTP context
                 HttpContext localContext = new BasicHttpContext();
 
                 //bind custom cookie store to local context
                 localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+                LocalContext.httpContext = localContext;
 
                 //instantiates httpclient to make request
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -139,7 +121,8 @@ public class Login extends ActionBarActivity {
                                 }
                             });
 
-                            startActivity(new Intent(getApplicationContext(), MainPage.class));
+                            Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                            startActivity(intent);
                         }
                         else{
                             runOnUiThread(new Runnable() {
@@ -150,7 +133,6 @@ public class Login extends ActionBarActivity {
                         }
 
                         if (httpResponse.getEntity() != null){
-                            Log.i("Entity: ", "Not null");
                             httpResponse.getEntity().consumeContent();
                         }
 

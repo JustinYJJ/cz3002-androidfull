@@ -7,6 +7,13 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/listViewSearch"
         android:layout_gravity="center_horizontal" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewFollowings"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

@@ -75,9 +75,24 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post as annonymous"
+            android:id="@+id/checkBoxAnnonymous"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
         android:layout_weight="1"
         android:gravity="bottom"
         android:orientation="horizontal"
@@ -85,16 +100,35 @@
 
         <Button
             android:id="@+id/buttonPost"
-            android:layout_width="wrap_content"
+            android:layout_width="250px"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:background="#ff229ebd"
             android:clickable="true"
             android:text="Post"
             android:textColor="#FFFFFF"
             android:onClick="onPostRantButtonClick"
-            android:layout_weight="0.24" />
-    </LinearLayout>
+            android:layout_weight="0.24"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20px"
+            android:layout_marginLeft="20px" />
+
+        <Button
+            android:id="@+id/buttonMessage"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#ff229ebd"
+            android:clickable="true"
+            android:text="Message friend"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.24"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20px"
+            android:layout_marginRight="20px"
+            android:onClick="onPostMessageButtonClick" />
+
+    </RelativeLayout>
 </LinearLayout>

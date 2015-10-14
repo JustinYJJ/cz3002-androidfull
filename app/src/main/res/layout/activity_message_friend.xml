@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.alpaca.alpacarant.MessageFriend">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewMessage"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativeLayout">
+
+        <Button
+            android:id="@+id/buttonCancelMessage"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#ff229ebd"
+            android:clickable="true"
+            android:text="Cancel"
+            android:textColor="#FFFFFF"
+            android:onClick="onCancelMessageButtonClick"
+            android:layout_weight="0.24"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20px"
+            android:layout_marginLeft="20px" />
+
+        <Button
+            android:id="@+id/buttonSendMessage"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#ff229ebd"
+            android:clickable="true"
+            android:text="Send message"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.24"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="20px"
+            android:onClick="onSendMessageButtonClick" />
+    </RelativeLayout>
+
+</RelativeLayout>
