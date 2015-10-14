@@ -44,7 +44,6 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.tab_live_feed, container, false);
-
 		setGetRantRequest(v);
 		return v;
 	}
@@ -139,10 +138,11 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
 		sendViewRantRequest(value, v, position);
 
-		Button button1 = (Button) v.findViewById(R.id.rantContent);
-		button1.setText("Testing");
-
+		TextView rant = (TextView) getActivity().findViewById(R.id.rantUser);
+		rant.setText("Change text");
+//
 		Button button = (Button) v.findViewById(R.id.buttonReadRant);
+		System.out.println(button.getText().toString());
 		button.setVisibility(View.GONE);
 	}
 
