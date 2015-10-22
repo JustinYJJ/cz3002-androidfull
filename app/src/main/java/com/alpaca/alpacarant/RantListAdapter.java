@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -44,6 +45,7 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.rant_listview_layout, null);
             viewHolder = new ViewHolder();
+            viewHolder.imageUser = (ImageView) convertView.findViewById(R.id.imageUser);
             viewHolder.rantUser = (TextView) convertView.findViewById(R.id.rantUser);
             viewHolder.rantContent = (TextView) convertView.findViewById(R.id.rantContent);
             viewHolder.buttonRead = (Button) convertView.findViewById(R.id.buttonReadRant);
@@ -56,6 +58,7 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
 
         final HashMap<String, String> temp = getItem(position);
 
+        viewHolder.imageUser.setImageResource(R.drawable.ic_unknown_profile);
         viewHolder.rantUser.setText(temp.get("ownername") + " posted: ");
         viewHolder.rantContent.setText(temp.get("contentPartial"));
         viewHolder.buttonRead.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +74,7 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
     }
 
     public class ViewHolder {
+        ImageView imageUser;
         TextView rantUser;
         TextView rantContent;
         Button buttonRead;

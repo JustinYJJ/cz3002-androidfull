@@ -1,11 +1,13 @@
 package com.alpaca.alpacarant;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class InboxListAdapter extends ArrayAdapter<HashMap<String, String>>{
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.inbox_listview_layout, null);
             viewHolder = new ViewHolder();
+            viewHolder.imageInboxUser = (ImageView) convertView.findViewById(R.id.inboxImageUser);
             viewHolder.inboxUser = (TextView) convertView.findViewById(R.id.inboxUser);
             viewHolder.inboxContent = (TextView) convertView.findViewById(R.id.inboxContent);
             viewHolder.buttonRead = (Button) convertView.findViewById(R.id.buttonReadInbox);
@@ -54,6 +57,7 @@ public class InboxListAdapter extends ArrayAdapter<HashMap<String, String>>{
 
         final HashMap<String, String> temp = getItem(position);
 
+        viewHolder.imageInboxUser.setImageResource(R.drawable.ic_unknown_profile);
         viewHolder.inboxUser.setText(temp.get("sendername") + " posted: ");
         viewHolder.inboxContent.setText(temp.get("contentPartial"));
         viewHolder.buttonRead.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +73,7 @@ public class InboxListAdapter extends ArrayAdapter<HashMap<String, String>>{
     }
 
     public class ViewHolder {
+        ImageView imageInboxUser;
         TextView inboxUser;
         TextView inboxContent;
         Button buttonRead;

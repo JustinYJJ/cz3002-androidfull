@@ -4,17 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/inboxImageUser"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_unknown_profile" />
+
     <TextView
         android:id="@+id/inboxUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_toRightOf="@+id/inboxImageUser"
+        android:paddingLeft="5dp" />
 
     <TextView
         android:id="@+id/inboxContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/inboxUser"
+        android:layout_below="@+id/inboxImageUser"
         android:background="#fff3f3f3"
         android:textSize="15sp" />
 
