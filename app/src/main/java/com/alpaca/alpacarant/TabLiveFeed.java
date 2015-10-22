@@ -44,7 +44,6 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.tab_live_feed, container, false);
-
 		setGetRantRequest(v);
 		return v;
 	}
