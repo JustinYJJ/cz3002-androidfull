@@ -299,10 +299,95 @@ public class MainPage extends ActionBarActivity {
             return;
         }
 
-        sendSaveProfileRequest(newName, newDescription, oldPassword1, newPassword1, repeatPassword1);
+        if (oldPassword1.isEmpty()){
+            sendSaveProfileRequest(newName, newDescription, v);
+        }
+
+        else {
+            sendSaveProfileRequest(newName, newDescription, oldPassword1, newPassword1, repeatPassword1, v);
+        }
     }
 
-    private void sendSaveProfileRequest(String newName, String newDescription, String oldPassword1, String newPassword1, String repeatPassword1) {
+    private void sendSaveProfileRequest(String newName, String newDescription, final View v) {
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                String paramNewName = params[0];
+                String paramNewDescription = params[1];
+
+                //instantiates httpclient to make request
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+
+                //url with the post data
+                HttpPost httpPost = new HttpPost("http://nturant.me/users/");
+                httpPost.setHeader("accept", "application/json");
+
+                //create values to be passed into POST request
+                BasicNameValuePair newnameBasicNameValuePair = new BasicNameValuePair("displayname", paramNewName);
+
+                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+                nameValuePairList.add(newnameBasicNameValuePair);
+
+                try{
+                    //convert value to UrlEncodedFormEntity
+                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                    //hands the entity to the request
+                    httpPost.setEntity(urlEncodedFormEntity);
+
+                    try{
+                        HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
+
+                        //get HttpResponse content
+                        InputStream inputStream = httpResponse.getEntity().getContent();
+
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        String bufferedStrChunk = null;
+
+                        while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                            stringBuilder.append(bufferedStrChunk);
+                        }
+
+                        System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        if (httpResponse.getStatusLine().getStatusCode() == 200){
+                            System.out.println("Profile updated");
+                        }
+
+                        if (httpResponse.getEntity() != null){
+                            Log.i("Entity: ", "Not null");
+                            httpResponse.getEntity().consumeContent();
+                        }
+
+                        return stringBuilder.toString();
+                    }   catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                Toast.makeText(v.getContext(), "Name updated", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MainPage.class));
+            }
+        }
+
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(newName, newDescription);
+    }
+
+    private void sendSaveProfileRequest(String newName, String newDescription, String oldPassword1, String newPassword1, String repeatPassword1, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
@@ -381,6 +466,7 @@ public class MainPage extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(String result) {
+                Toast.makeText(v.getContext(), "Name updated", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainPage.class));
             }
         }
