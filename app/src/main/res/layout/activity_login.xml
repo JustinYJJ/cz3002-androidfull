@@ -18,6 +18,12 @@
         android:layout_alignParentRight="true"
         android:background="#0fffffff">
 
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerHorizontal="true" />
+
         <TextView
             android:id="@+id/textUsername"
             android:layout_width="wrap_content"
