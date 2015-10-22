@@ -1,15 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#ff0b5d9a">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textColor="#000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="#0fffffff">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_unknown_profile" />
+
+        <TextView
+            android:id="@+id/textProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="40dp"
+            android:text="Name: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffffff" />
+
+        <TextView
+            android:id="@+id/textDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textProfileName"
+            android:layout_alignRight="@+id/textProfileName"
+            android:layout_below="@+id/textProfileName"
+            android:layout_marginTop="10dp"
+            android:text="Description: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF" />
+
+        <TextView
+            android:id="@+id/textOldPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textDescription"
+            android:layout_alignRight="@+id/textDescription"
+            android:layout_below="@+id/textDescription"
+            android:layout_marginTop="10dp"
+            android:text="Old Password: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textNewPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textOldPassword"
+            android:layout_alignRight="@+id/textOldPassword"
+            android:layout_below="@+id/textOldPassword"
+            android:layout_marginTop="10dp"
+            android:text="New Password: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textRepeatPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textNewPassword"
+            android:layout_alignRight="@+id/textNewPassword"
+            android:layout_below="@+id/textNewPassword"
+            android:layout_marginTop="10dp"
+            android:text="Repeat Password: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFFFF"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textDescription"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_toRightOf="@+id/textProfileName"
+            android:background="#99ffffff"
+            android:clickable="true"
+            android:inputType="text"
+            android:textColor="#ff000000" />
+
+        <EditText
+            android:id="@+id/editDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textOldPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_toRightOf="@+id/textDescription"
+            android:background="#99ffffff"
+            android:clickable="true"
+            android:inputType="text"
+            android:textColor="#ff000000" />
+
+        <EditText
+            android:id="@+id/editOldPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textNewPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_toRightOf="@+id/textOldPassword"
+            android:background="#99ffffff"
+            android:clickable="true"
+            android:inputType="textPassword"
+            android:textColor="#ff000000"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editNewPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textRepeatPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_toRightOf="@+id/textNewPassword"
+            android:background="#99ffffff"
+            android:clickable="true"
+            android:inputType="textPassword"
+            android:textColor="#ff000000"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editRepeatPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/editNewPassword"
+            android:layout_alignLeft="@+id/editNewPassword"
+            android:layout_alignRight="@+id/editNewPassword"
+            android:layout_alignStart="@+id/editNewPassword"
+            android:layout_alignTop="@+id/textRepeatPassword"
+            android:background="#99ffffff"
+            android:clickable="true"
+            android:inputType="textPassword"
+            android:textColor="#ff000000"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/changePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:onClick="onChangePasswordButtonClick"
+            android:text="Change Password"
+            android:textColor="#ffffffff"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:onClick="onSaveProfileButtonClick"
+            android:clickable="true" />
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -133,7 +133,6 @@ public class MessageFriend extends ActionBarActivity implements MessageFriendLis
 
     public void onSendMessageButtonClick(View v) {
         for (String user : usernames) {
-            System.out.println(user + " " + message);
             sendFriendMessageRequest(user, message);
         }
     }
@@ -245,7 +244,6 @@ public class MessageFriend extends ActionBarActivity implements MessageFriendLis
 
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
-        Toast.makeText(MessageFriend.this, value.get("name") + " " + value.get("username"), Toast.LENGTH_SHORT).show();
         usernames.add(value.get("username"));
     }
 }

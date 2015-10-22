@@ -109,7 +109,12 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 						JSONObject name = result.getJSONObject(i);
 						map.put("ownername", name.getString("ownername"));
 						map.put("content", name.getString("content"));
-						map.put("contentPartial", name.getString("content").substring(0, 5) + "...");
+						if (name.getString("content").length() >= 5) {
+							map.put("contentPartial", name.getString("content").substring(0, 5) + "...");
+						}
+						else {
+							map.put("contentPartial", "...");
+						}
 						map.put("rantid", name.getString("_id"));
 						mylist.add(map);
 					}

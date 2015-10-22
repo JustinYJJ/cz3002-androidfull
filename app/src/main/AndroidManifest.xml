@@ -46,6 +46,10 @@
             android:name=".ReplyMessage"
             android:label="@string/title_activity_reply_message" >
         </activity>
+        <activity
+            android:name=".EditRant"
+            android:label="@string/title_activity_edit_rant" >
+        </activity>
     </application>
 
 </manifest>

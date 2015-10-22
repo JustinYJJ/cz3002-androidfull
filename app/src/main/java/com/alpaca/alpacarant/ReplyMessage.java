@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReplyMessage extends ActionBarActivity {
-    HashMap<String, String> hashMap;
+    private HashMap<String, String> hashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,8 @@ public class ReplyMessage extends ActionBarActivity {
 
         Intent intent = getIntent();
         hashMap = (HashMap<String, String>)intent.getSerializableExtra("hashmap");
+
+        sendViewMessageRequest(hashMap);
 
         TextView username = (TextView) findViewById(R.id.replyUser);
         username.setText(hashMap.get("sendername") + ":");
@@ -48,11 +50,10 @@ public class ReplyMessage extends ActionBarActivity {
 
     public void onSendReplyButtonClick(View v){
         EditText reply = (EditText) findViewById(R.id.editReply);
-        sendReplyRequest(hashMap.get("sender"), reply.getText().toString());
-        finish();
+        sendReplyRequest(hashMap.get("sender"), reply.getText().toString(), v);
     }
 
-    private void sendReplyRequest(String sender, String s) {
+    private void sendReplyRequest(String sender, String s, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
@@ -123,10 +124,86 @@ public class ReplyMessage extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(String result) {
+                startActivity(new Intent(v.getContext(), MainPage.class));
             }
         }
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
         sendPostReqAsyncTask.execute(sender, s);
+    }
+
+    private void sendViewMessageRequest(HashMap<String, String> value) {
+        class SendPostReqAsyncTask extends AsyncTask<HashMap<String, String>, Void, String> {
+
+            @Override
+            protected String doInBackground(HashMap<String, String>... params) {
+                HashMap<String, String> paramRantId = params[0];
+
+                //instantiates httpclient to make request
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+
+                //url with the post data
+                HttpPost httpPost = new HttpPost("http://nturant.me/users/readmessage");
+                httpPost.setHeader("accept", "application/json");
+
+                //create values to be passed into POST request
+                BasicNameValuePair messageIdBasicNameValuePair = new BasicNameValuePair("msgid", paramRantId.get("messageid"));
+
+                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+                nameValuePairList.add(messageIdBasicNameValuePair);
+
+                try {
+                    //convert value to UrlEncodedFormEntity
+                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                    //hands the entity to the request
+                    httpPost.setEntity(urlEncodedFormEntity);
+
+                    try {
+                        HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
+
+                        //get HttpResponse content
+                        InputStream inputStream = httpResponse.getEntity().getContent();
+
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        String bufferedStrChunk = null;
+
+                        while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                            stringBuilder.append(bufferedStrChunk);
+                        }
+
+                        System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                            System.out.println("Message viewed");
+                            System.out.println(stringBuilder.toString());
+                        }
+
+                        if (httpResponse.getEntity() != null) {
+                            httpResponse.getEntity().consumeContent();
+                        }
+
+                        return stringBuilder.toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+            }
+        }
+
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(value);
     }
 }

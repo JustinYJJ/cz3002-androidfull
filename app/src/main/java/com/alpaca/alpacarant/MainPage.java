@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -59,7 +61,8 @@ public class MainPage extends ActionBarActivity {
         listNavItems = new ArrayList<NavItem>();
         listNavItems.add(new NavItem("Alpaca Rant", R.drawable.ic_home_button));
         listNavItems.add(new NavItem("Friend Suggestions", R.drawable.ic_search_button));
-        listNavItems.add(new NavItem("Profile", R.drawable.ic_settings_button));
+        listNavItems.add(new NavItem("Profile", R.drawable.ic_unknown_profile_dark));
+        listNavItems.add(new NavItem("Settings", R.drawable.ic_settings_button));
         listNavItems.add(new NavItem("Logout", R.drawable.ic_logout_button));
 
         NavItemAdapter navItemAdapter = new NavItemAdapter(getApplicationContext(), R.layout.item_nav_list, listNavItems);
@@ -69,6 +72,7 @@ public class MainPage extends ActionBarActivity {
         listFragments = new ArrayList<Fragment>();
         listFragments.add(new SideHome());
         listFragments.add(new SideSearch());
+        listFragments.add(new SideProfile());
         listFragments.add(new SideSettings());
         listFragments.add(new SideLogout());
 
@@ -129,9 +133,11 @@ public class MainPage extends ActionBarActivity {
         CheckBox checkBoxAnnonymous = (CheckBox) findViewById(R.id.checkBoxAnnonymous);
         if (checkBoxAnnonymous.isChecked()){
             annonymous = "true";
+            Toast.makeText(getApplicationContext(), "Anonymous", Toast.LENGTH_SHORT).show();
         }
         else{
-            annonymous = "false";
+            annonymous = null;
+            Toast.makeText(getApplicationContext(), "Not anonymous", Toast.LENGTH_SHORT).show();
         }
 
         sendPostRantRequest(lifetime, viewtime, annonymous, rant);
@@ -166,7 +172,7 @@ public class MainPage extends ActionBarActivity {
                 //create values to be passed into POST request
                 BasicNameValuePair lifetimeBasicNameValuePair = new BasicNameValuePair("lifetime", paramLifeTime);
                 BasicNameValuePair viewtimeBasicNameValuePair = new BasicNameValuePair("viewtime", paramViewTime);
-                BasicNameValuePair annonymousBasicNameValuePair = new BasicNameValuePair("annonymous", paramAnnonymous);
+                BasicNameValuePair annonymousBasicNameValuePair = new BasicNameValuePair("anonymous", paramAnnonymous);
                 BasicNameValuePair contentBasicNameValuePair = new BasicNameValuePair("content", paramRant);
 
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
@@ -236,6 +242,151 @@ public class MainPage extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_page, menu);
         return true;
+    }
+
+    public void onChangePasswordButtonClick(View v) {
+        TextView oldPassword = (TextView) findViewById(R.id.textOldPassword);
+        oldPassword.setVisibility(View.VISIBLE);
+
+        TextView newPassword = (TextView) findViewById(R.id.textNewPassword);
+        newPassword.setVisibility(View.VISIBLE);
+
+        TextView repeatPassword = (TextView) findViewById(R.id.textRepeatPassword);
+        repeatPassword.setVisibility(View.VISIBLE);
+
+        EditText editOldPassword = (EditText) findViewById(R.id.editOldPassword);
+        editOldPassword.setVisibility(View.VISIBLE);
+
+        EditText editNewPassword = (EditText) findViewById(R.id.editNewPassword);
+        editNewPassword.setVisibility(View.VISIBLE);
+
+        EditText editRepeatPassword = (EditText) findViewById(R.id.editRepeatPassword);
+        editRepeatPassword.setVisibility(View.VISIBLE);
+
+        TextView changePassword = (TextView) findViewById(R.id.changePassword);
+        changePassword.setVisibility(View.GONE);
+
+    }
+
+    public void onSaveProfileButtonClick(View v){
+        EditText editName = (EditText) findViewById(R.id.editProfileName);
+        String newName = editName.getText().toString();
+
+        EditText editDescription = (EditText) findViewById(R.id.editDescription);
+        String newDescription = editDescription.getText().toString();
+
+        EditText oldPassword = (EditText) findViewById(R.id.editOldPassword);
+        String oldPassword1 = oldPassword.getText().toString();
+
+        EditText newPassword = (EditText) findViewById(R.id.editNewPassword);
+        String newPassword1 = newPassword.getText().toString();
+
+        EditText repeatPassword = (EditText) findViewById(R.id.editRepeatPassword);
+        String repeatPassword1 = repeatPassword.getText().toString();
+
+        if (newName.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (oldPassword1.equals(newPassword1) && !oldPassword1.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Old and New password cannot be the same", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!newPassword1.equals(repeatPassword1) && !newPassword1.isEmpty()){
+            Toast.makeText(getApplicationContext(), "New and Repeat password does not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        sendSaveProfileRequest(newName, newDescription, oldPassword1, newPassword1, repeatPassword1);
+    }
+
+    private void sendSaveProfileRequest(String newName, String newDescription, String oldPassword1, String newPassword1, String repeatPassword1) {
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                String paramNewName = params[0];
+                String paramNewDescription = params[1];
+                String paramOldPassword = params[2];
+                String paramNewPassWord = params[3];
+                String paramRepeatPassWord = params[4];
+
+                //instantiates httpclient to make request
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+
+                //url with the post data
+                HttpPost httpPost = new HttpPost("http://nturant.me/users/");
+                httpPost.setHeader("accept", "application/json");
+
+                //create values to be passed into POST request
+                BasicNameValuePair oldpasswordBasicNameValuePair = new BasicNameValuePair("oldpassword", paramOldPassword);
+                BasicNameValuePair newpasswordBasicNameValuePair = new BasicNameValuePair("newpassword", paramNewPassWord);
+                BasicNameValuePair repeatpasswordBasicNameValuePair = new BasicNameValuePair("repeatpassword", paramRepeatPassWord);
+                BasicNameValuePair newnameBasicNameValuePair = new BasicNameValuePair("displayname", paramNewName);
+
+                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+                nameValuePairList.add(oldpasswordBasicNameValuePair);
+                nameValuePairList.add(newpasswordBasicNameValuePair);
+                nameValuePairList.add(repeatpasswordBasicNameValuePair);
+                nameValuePairList.add(newnameBasicNameValuePair);
+
+                try{
+                    //convert value to UrlEncodedFormEntity
+                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                    //hands the entity to the request
+                    httpPost.setEntity(urlEncodedFormEntity);
+
+                    try{
+                        HttpResponse httpResponse = httpClient.execute(httpPost, LocalContext.httpContext);
+
+                        //get HttpResponse content
+                        InputStream inputStream = httpResponse.getEntity().getContent();
+
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        String bufferedStrChunk = null;
+
+                        while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                            stringBuilder.append(bufferedStrChunk);
+                        }
+
+                        System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        if (httpResponse.getStatusLine().getStatusCode() == 200){
+                            System.out.println("Profile updated");
+                        }
+
+                        if (httpResponse.getEntity() != null){
+                            Log.i("Entity: ", "Not null");
+                            httpResponse.getEntity().consumeContent();
+                        }
+
+                        return stringBuilder.toString();
+                    }   catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                startActivity(new Intent(getApplicationContext(), MainPage.class));
+            }
+        }
+
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(newName, newDescription, oldPassword1, newPassword1, repeatPassword1);
     }
 
     @Override
