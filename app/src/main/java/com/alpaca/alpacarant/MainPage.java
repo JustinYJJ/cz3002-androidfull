@@ -61,8 +61,8 @@ public class MainPage extends ActionBarActivity {
         listNavItems = new ArrayList<NavItem>();
         listNavItems.add(new NavItem("Alpaca Rant", R.drawable.ic_home_button));
         listNavItems.add(new NavItem("Friend Suggestions", R.drawable.ic_search_button));
-        listNavItems.add(new NavItem("Profile", R.drawable.ic_unknown_profile_dark));
-        listNavItems.add(new NavItem("Settings", R.drawable.ic_settings_button));
+        listNavItems.add(new NavItem("Your Rants", R.drawable.ic_unknown_profile_dark));
+        listNavItems.add(new NavItem("Profile", R.drawable.ic_settings_button));
         listNavItems.add(new NavItem("Logout", R.drawable.ic_logout_button));
 
         NavItemAdapter navItemAdapter = new NavItemAdapter(getApplicationContext(), R.layout.item_nav_list, listNavItems);
@@ -72,8 +72,8 @@ public class MainPage extends ActionBarActivity {
         listFragments = new ArrayList<Fragment>();
         listFragments.add(new SideHome());
         listFragments.add(new SideSearch());
+        listFragments.add(new SideYourRants());
         listFragments.add(new SideProfile());
-        listFragments.add(new SideSettings());
         listFragments.add(new SideLogout());
 
         //load first fragment as default

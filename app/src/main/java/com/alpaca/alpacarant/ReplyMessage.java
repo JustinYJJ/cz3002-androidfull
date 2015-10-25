@@ -34,8 +34,11 @@ public class ReplyMessage extends ActionBarActivity {
 
         Intent intent = getIntent();
         hashMap = (HashMap<String, String>)intent.getSerializableExtra("hashmap");
+        String msgid = hashMap.get("messageid");
 
-        sendViewMessageRequest(hashMap);
+        System.out.println("Entering view message request");
+        sendViewMessageRequest(msgid);
+        System.out.println("Exiting view message request");
 
         TextView username = (TextView) findViewById(R.id.replyUser);
         username.setText(hashMap.get("sendername") + ":");
@@ -132,12 +135,12 @@ public class ReplyMessage extends ActionBarActivity {
         sendPostReqAsyncTask.execute(sender, s);
     }
 
-    private void sendViewMessageRequest(HashMap<String, String> value) {
-        class SendPostReqAsyncTask extends AsyncTask<HashMap<String, String>, Void, String> {
+    private void sendViewMessageRequest(String msgid) {
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
-            protected String doInBackground(HashMap<String, String>... params) {
-                HashMap<String, String> paramRantId = params[0];
+            protected String doInBackground(String... params) {
+                String paramMsgId = params[0];
 
                 //instantiates httpclient to make request
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -147,7 +150,7 @@ public class ReplyMessage extends ActionBarActivity {
                 httpPost.setHeader("accept", "application/json");
 
                 //create values to be passed into POST request
-                BasicNameValuePair messageIdBasicNameValuePair = new BasicNameValuePair("msgid", paramRantId.get("messageid"));
+                BasicNameValuePair messageIdBasicNameValuePair = new BasicNameValuePair("msgid", paramMsgId);
 
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(messageIdBasicNameValuePair);
@@ -178,6 +181,7 @@ public class ReplyMessage extends ActionBarActivity {
                         }
 
                         System.out.println(httpResponse.getStatusLine().getStatusCode());
+                        System.out.println("Status code: " + httpResponse.getStatusLine().getStatusCode());
                         if (httpResponse.getStatusLine().getStatusCode() == 200) {
                             System.out.println("Message viewed");
                             System.out.println(stringBuilder.toString());
@@ -196,14 +200,9 @@ public class ReplyMessage extends ActionBarActivity {
                 }
                 return null;
             }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-            }
         }
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute(value);
+        sendPostReqAsyncTask.execute(msgid);
     }
 }
