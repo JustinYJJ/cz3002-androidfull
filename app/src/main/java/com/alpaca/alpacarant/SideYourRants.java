@@ -28,14 +28,14 @@ import java.util.HashMap;
 /**
  * Created by justinyeo on 17/9/15.
  */
-public class SideYourRants extends Fragment implements ProfileListAdapter.customButtonListener{
+public class SideYourRants extends Fragment implements YourRantsListAdapter.customButtonListener{
     private ArrayList<HashMap<String, String>> mylist;
     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.side_profile, container, false);
+        view = inflater.inflate(R.layout.side_your_rants, container, false);
 
         getAllRantsRequest(view);
         return view;
@@ -115,7 +115,7 @@ public class SideYourRants extends Fragment implements ProfileListAdapter.custom
 
                     // Instantiating an adapter to store each items
                     // R.layout.rant_listview_layout defines the layout of each item
-                    ProfileListAdapter adapter = new ProfileListAdapter(v.getContext(), mylist);
+                    YourRantsListAdapter adapter = new YourRantsListAdapter(v.getContext(), mylist);
                     adapter.setCustomButtonListner(SideYourRants.this);
 
                     // Getting a reference to listview of main.xml layout file

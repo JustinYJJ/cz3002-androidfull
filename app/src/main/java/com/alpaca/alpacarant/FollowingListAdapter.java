@@ -44,7 +44,8 @@ public class FollowingListAdapter extends ArrayAdapter<HashMap<String, String>> 
             viewHolder = new ViewHolder();
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.profile_picFollowing);
             viewHolder.textView = (TextView) convertView.findViewById(R.id.nameFollowing);
-            viewHolder.button = (Button) convertView.findViewById(R.id.buttonUnfollow);
+            viewHolder.buttonUnfollow = (Button) convertView.findViewById(R.id.buttonUnfollow);
+            viewHolder.buttonMessage = (Button) convertView.findViewById(R.id.buttonMessageFriend);
             convertView.setTag(viewHolder);
         }
 
@@ -56,7 +57,17 @@ public class FollowingListAdapter extends ArrayAdapter<HashMap<String, String>> 
 
         viewHolder.imageView.setImageResource(R.drawable.ic_unknown_profile);
         viewHolder.textView.setText(temp.get("name"));
-        viewHolder.button.setOnClickListener(new View.OnClickListener() {
+        viewHolder.buttonUnfollow.setTag("Unfollow");
+        viewHolder.buttonMessage.setTag("Message");
+        viewHolder.buttonUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (customListner != null) {
+                    customListner.onButtonClickListner(position, temp, v);
+                }
+            }
+        });
+        viewHolder.buttonMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (customListner != null){
@@ -71,6 +82,7 @@ public class FollowingListAdapter extends ArrayAdapter<HashMap<String, String>> 
     public class ViewHolder {
         ImageView imageView;
         TextView textView;
-        Button button;
+        Button buttonUnfollow;
+        Button buttonMessage;
     }
 }

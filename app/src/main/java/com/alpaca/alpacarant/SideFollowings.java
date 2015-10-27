@@ -1,5 +1,6 @@
 package com.alpaca.alpacarant;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * Created by justinyeo on 17/9/15.
  */
-public class SideSearch extends Fragment implements FriendListAdapter.customButtonListener, FollowingListAdapter.customButtonListener {
+public class SideFollowings extends Fragment implements FriendListAdapter.customButtonListener, FollowingListAdapter.customButtonListener {
     int[] pictures = new int[]{
             R.drawable.ic_unknown_profile,
     };
@@ -41,94 +42,9 @@ public class SideSearch extends Fragment implements FriendListAdapter.customButt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.side_search, container, false);
-        sendGetRequest(v);
+        View v = inflater.inflate(R.layout.side_following, container, false);
         sendGetFollowersRequest(v);
         return v;
-    }
-
-    private void sendGetRequest(final View v) {
-        class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
-
-            @Override
-            protected JSONArray doInBackground(String... params) {
-
-                //instantiates httpclient to make request
-                HttpClient httpClient = new DefaultHttpClient();
-
-                //url with the post data
-                HttpGet httpGet = new HttpGet("http://nturant.me/users/friendSuggestion");
-                httpGet.setHeader("accept", "application/json");
-
-                try {
-                    try {
-                        HttpResponse httpResponse = httpClient.execute(httpGet, LocalContext.httpContext);
-
-                        //get HttpResponse content
-                        InputStream inputStream = httpResponse.getEntity().getContent();
-
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        String bufferedStrChunk = null;
-
-                        while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(bufferedStrChunk);
-                        }
-                        String result = stringBuilder.toString();
-
-                        JSONArray jArray = new JSONArray(result);
-
-                        Log.i("Response: ", stringBuilder.toString());
-                        Log.i("Status: ", "" + httpResponse.getStatusLine().getStatusCode());
-
-                        return jArray;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(JSONArray result) {
-                super.onPostExecute(result);
-                ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-
-                try {
-
-                    for (int i = 0; i < result.length(); i++) {
-                        HashMap<String, String> map = new HashMap<String, String>();
-                        JSONObject name = result.getJSONObject(i);
-                        map.put("name", name.getString("displayname"));
-                        map.put("picture", Integer.toString(pictures[0]));
-                        map.put("username", name.getString("username"));
-                        mylist.add(map);
-                    }
-
-                    // Instantiating an adapter to store each items
-                    // R.layout.friend_listview_layout defines the layout of each item
-                    FriendListAdapter adapter = new FriendListAdapter(v.getContext(), mylist);
-                    adapter.setCustomButtonListner(SideSearch.this);
-
-                    // Getting a reference to listview of main.xml layout file
-                    ListView listView = (ListView) v.findViewById(R.id.listViewSearch);
-
-                    // Setting the adapter to the listView
-                    listView.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute();
     }
 
     private void sendGetFollowersRequest(final View v) {
@@ -198,7 +114,7 @@ public class SideSearch extends Fragment implements FriendListAdapter.customButt
                     // Instantiating an adapter to store each items
                     // R.layout.friend_listview_layout defines the layout of each item
                     FollowingListAdapter adapter1 = new FollowingListAdapter(v.getContext(), mylist);
-                    adapter1.setCustomButtonListner(SideSearch.this);
+                    adapter1.setCustomButtonListner(SideFollowings.this);
 
                     // Getting a reference to listview of main.xml layout file
                     ListView listView = (ListView) v.findViewById(R.id.listViewFollowings);
@@ -217,23 +133,22 @@ public class SideSearch extends Fragment implements FriendListAdapter.customButt
 
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
-        Button button = (Button) v.findViewById(R.id.buttonFollow);
         Button button1 = (Button) v.findViewById(R.id.buttonUnfollow);
-
-        if (button != null) {
-            if (button.getText().toString().equals("Follow")) {
-                sendFollowFriendRequest(value.get("username"), v);
-            } else {
-                sendUnfollowFriendRequest(value.get("username"), v);
-            }
-        }
+        Button button = (Button) v.findViewById(R.id.buttonMessageFriend);
+        ListView followings = (ListView) getActivity().findViewById(R.id.listViewFollowings);
+        View view = followings.getChildAt(position - followings.getFirstVisiblePosition());
 
         if (button1 != null) {
             if (button1.getText().toString().equals("Follow")) {
-                sendFollowFriendRequest(value.get("username"), v);
+                sendFollowFriendRequest(value.get("username"), view);
             } else {
-                sendUnfollowFriendRequest(value.get("username"), v);
+                sendUnfollowFriendRequest(value.get("username"), view);
             }
+        }
+        if (v.getTag().toString().equals("Message")){
+            Intent intent = new Intent(v.getContext(), MessageFriend.class);
+            intent.putExtra("hashmap", value);
+            startActivity(intent);
         }
     }
 
@@ -304,18 +219,13 @@ public class SideSearch extends Fragment implements FriendListAdapter.customButt
 
             @Override
             protected void onPostExecute(String result) {
-                Button button = (Button) v.findViewById(R.id.buttonFollow);
                 Button button1 = (Button) v.findViewById(R.id.buttonUnfollow);
-                Button message = (Button) v.findViewById(R.id.buttonMessage);
-
-                if (button != null) {
-                    button.setText("Unfollow");
-                }
+                Button message = (Button) v.findViewById(R.id.buttonMessageFriend);
 
                 if (button1 != null) {
                     button1.setText("Unfollow");
                 }
-                //message.setVisibility(View.VISIBLE);
+                message.setVisibility(View.VISIBLE);
             }
         }
 
@@ -390,18 +300,14 @@ public class SideSearch extends Fragment implements FriendListAdapter.customButt
 
             @Override
             protected void onPostExecute(String result) {
-                Button button = (Button) v.findViewById(R.id.buttonFollow);
                 Button button1 = (Button) v.findViewById(R.id.buttonUnfollow);
-                Button message = (Button) v.findViewById(R.id.buttonMessage);
-
-                if (button != null) {
-                    button.setText("Follow");
-                }
+                Button message = (Button) v.findViewById(R.id.buttonMessageFriend);
 
                 if (button1 != null) {
                     button1.setText("Follow");
                 }
-                //message.setVisibility(View.VISIBLE);
+
+                message.setVisibility(View.GONE);
             }
         }
 

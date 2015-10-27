@@ -22,6 +22,13 @@
         android:textSize="15dp" />
 
     <Button
+        android:id="@+id/buttonMessageFriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/buttonUnfollow"
+        android:text="Message" />
+
+    <Button
         android:id="@+id/buttonUnfollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -30,121 +32,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MessageFriend extends ActionBarActivity implements MessageFriendListAdapter.customButtonListener {
-    int[] pictures = new int[]{
-            R.drawable.ic_unknown_profile,
-    };
-
-    ArrayList<String> usernames = new ArrayList<String>();
-    String message;
+public class MessageFriend extends ActionBarActivity {
+    private HashMap<String, String> hashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        message = getIntent().getStringExtra("Message");
         setContentView(R.layout.activity_message_friend);
 
-        getFriendsRequest();
+        Intent intent = getIntent();
+        hashMap = (HashMap<String, String>)intent.getSerializableExtra("hashmap");
+
+        TextView username = (TextView) findViewById(R.id.MessageUser);
+        username.setText("To " + hashMap.get("name") + ":");
     }
 
-    private void getFriendsRequest() {
-        class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
-
-            @Override
-            protected JSONArray doInBackground(String... params) {
-
-                //instantiates httpclient to make request
-                HttpClient httpClient = new DefaultHttpClient();
-
-                //url with the post data
-                HttpGet httpGet = new HttpGet("http://nturant.me/users/followings");
-                httpGet.setHeader("accept", "application/json");
-
-                try {
-                    try {
-                        HttpResponse httpResponse = httpClient.execute(httpGet, LocalContext.httpContext);
-
-                        //get HttpResponse content
-                        InputStream inputStream = httpResponse.getEntity().getContent();
-
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        String bufferedStrChunk = null;
-
-                        while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(bufferedStrChunk);
-                        }
-                        String result = stringBuilder.toString();
-
-                        JSONArray jArray = new JSONArray(result);
-
-                        Log.i("Response: ", stringBuilder.toString());
-                        Log.i("Status: ", "" + httpResponse.getStatusLine().getStatusCode());
-
-                        return jArray;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(JSONArray result) {
-                super.onPostExecute(result);
-                ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-
-                try {
-
-                    for (int i = 0; i < result.length(); i++) {
-                        HashMap<String, String> map = new HashMap<String, String>();
-                        JSONObject name = result.getJSONObject(i);
-                        map.put("name", name.getString("displayname"));
-                        map.put("picture", Integer.toString(pictures[0]));
-                        map.put("username", name.getString("username"));
-                        mylist.add(map);
-                    }
-
-                    // Instantiating an adapter to store each items
-                    // R.layout.friend_listview_layout defines the layout of each item
-                    MessageFriendListAdapter adapter1 = new MessageFriendListAdapter(getApplicationContext(), mylist);
-                    adapter1.setCustomButtonListner(MessageFriend.this);
-
-                    // Getting a reference to listview of main.xml layout file
-                    ListView listView = (ListView) findViewById(R.id.listViewMessage);
-
-                    // Setting the adapter to the listView
-                    listView.setAdapter(adapter1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute();
+    public void onCancelMessageButtonClick(View v){
+        finish();
     }
 
-    public void onSendMessageButtonClick(View v) {
-        for (String user : usernames) {
-            sendFriendMessageRequest(user, message);
-        }
+    public void onSendMessageButtonClick(View v){
+        EditText message = (EditText) findViewById(R.id.editMessage);
+        String message1 = message.getText().toString();
+
+        sendMessageRequest(message1, hashMap.get("username"), v);
     }
 
-    private void sendFriendMessageRequest(String user, String message) {
+    private void sendMessageRequest(String message1, String username, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
             protected String doInBackground(String... params) {
 
-                String paramUser = params[0];
-                String paramMessage = params[1];
+                String paramMessage = params[0];
+                String paramUsername= params[1];
 
                 //instantiates httpclient to make request
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -154,11 +75,11 @@ public class MessageFriend extends ActionBarActivity implements MessageFriendLis
                 httpPost.setHeader("accept", "application/json");
 
                 //create values to be passed into POST request
-                BasicNameValuePair userBasicNameValuePair = new BasicNameValuePair("receiver", paramUser);
+                BasicNameValuePair receiverBasicNameValuePair = new BasicNameValuePair("receiver", paramUsername);
                 BasicNameValuePair messageBasicNameValuePair = new BasicNameValuePair("message", paramMessage);
 
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-                nameValuePairList.add(userBasicNameValuePair);
+                nameValuePairList.add(receiverBasicNameValuePair);
                 nameValuePairList.add(messageBasicNameValuePair);
 
                 try{
@@ -209,17 +130,15 @@ public class MessageFriend extends ActionBarActivity implements MessageFriendLis
 
             @Override
             protected void onPostExecute(String result) {
-                startActivity(new Intent(getApplicationContext(), MainPage.class));
+                Toast.makeText(v.getContext(), "Message has been sent", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(v.getContext(), MainPage.class));
             }
         }
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute(user, message);
+        sendPostReqAsyncTask.execute(message1, username);
     }
 
-    public void onCancelMessageButtonClick(View v) {
-        finish();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -240,10 +159,5 @@ public class MessageFriend extends ActionBarActivity implements MessageFriendLis
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
-        usernames.add(value.get("username"));
     }
 }

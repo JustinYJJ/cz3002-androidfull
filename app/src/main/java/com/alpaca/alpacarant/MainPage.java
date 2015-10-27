@@ -61,6 +61,7 @@ public class MainPage extends ActionBarActivity {
         listNavItems = new ArrayList<NavItem>();
         listNavItems.add(new NavItem("Alpaca Rant", R.drawable.ic_home_button));
         listNavItems.add(new NavItem("Friend Suggestions", R.drawable.ic_search_button));
+        listNavItems.add(new NavItem("Followings", R.drawable.ic_following_button));
         listNavItems.add(new NavItem("Your Rants", R.drawable.ic_unknown_profile_dark));
         listNavItems.add(new NavItem("Profile", R.drawable.ic_settings_button));
         listNavItems.add(new NavItem("Logout", R.drawable.ic_logout_button));
@@ -71,7 +72,8 @@ public class MainPage extends ActionBarActivity {
 
         listFragments = new ArrayList<Fragment>();
         listFragments.add(new SideHome());
-        listFragments.add(new SideSearch());
+        listFragments.add(new SideFriendSuggestion());
+        listFragments.add(new SideFollowings());
         listFragments.add(new SideYourRants());
         listFragments.add(new SideProfile());
         listFragments.add(new SideLogout());
@@ -133,11 +135,9 @@ public class MainPage extends ActionBarActivity {
         CheckBox checkBoxAnnonymous = (CheckBox) findViewById(R.id.checkBoxAnnonymous);
         if (checkBoxAnnonymous.isChecked()){
             annonymous = "true";
-            Toast.makeText(getApplicationContext(), "Anonymous", Toast.LENGTH_SHORT).show();
         }
         else{
             annonymous = null;
-            Toast.makeText(getApplicationContext(), "Not anonymous", Toast.LENGTH_SHORT).show();
         }
 
         sendPostRantRequest(lifetime, viewtime, annonymous, rant);
@@ -326,9 +326,11 @@ public class MainPage extends ActionBarActivity {
 
                 //create values to be passed into POST request
                 BasicNameValuePair newnameBasicNameValuePair = new BasicNameValuePair("displayname", paramNewName);
+                BasicNameValuePair newDescriptionBasicNameValuePair = new BasicNameValuePair("about", paramNewDescription);
 
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(newnameBasicNameValuePair);
+                nameValuePairList.add(newDescriptionBasicNameValuePair);
 
                 try{
                     //convert value to UrlEncodedFormEntity
@@ -378,7 +380,7 @@ public class MainPage extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(String result) {
-                Toast.makeText(v.getContext(), "Name updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Profile updated", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainPage.class));
             }
         }
@@ -411,12 +413,14 @@ public class MainPage extends ActionBarActivity {
                 BasicNameValuePair newpasswordBasicNameValuePair = new BasicNameValuePair("newpassword", paramNewPassWord);
                 BasicNameValuePair repeatpasswordBasicNameValuePair = new BasicNameValuePair("repeatpassword", paramRepeatPassWord);
                 BasicNameValuePair newnameBasicNameValuePair = new BasicNameValuePair("displayname", paramNewName);
+                BasicNameValuePair newDescriptionBasicNameValuePair = new BasicNameValuePair("about", paramNewDescription);
 
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(oldpasswordBasicNameValuePair);
                 nameValuePairList.add(newpasswordBasicNameValuePair);
                 nameValuePairList.add(repeatpasswordBasicNameValuePair);
                 nameValuePairList.add(newnameBasicNameValuePair);
+                nameValuePairList.add(newDescriptionBasicNameValuePair);
 
                 try{
                     //convert value to UrlEncodedFormEntity
@@ -466,7 +470,7 @@ public class MainPage extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(String result) {
-                Toast.makeText(v.getContext(), "Name updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Profile updated", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainPage.class));
             }
         }

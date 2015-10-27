@@ -100,7 +100,7 @@
 
         <Button
             android:id="@+id/buttonPost"
-            android:layout_width="250px"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#ff229ebd"
@@ -108,27 +108,8 @@
             android:text="Post"
             android:textColor="#FFFFFF"
             android:onClick="onPostRantButtonClick"
-            android:layout_weight="0.24"
-            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20px"
-            android:layout_marginRight="20px" />
-
-        <Button
-            android:id="@+id/buttonMessage"
-            android:layout_width="250px"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#ff229ebd"
-            android:clickable="true"
-            android:text="Message friend"
-            android:textColor="#FFFFFF"
-            android:layout_weight="0.24"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20px"
-            android:layout_marginLeft="20px"
-            android:onClick="onPostMessageButtonClick" />
-
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp" />
     </RelativeLayout>
 </LinearLayout>

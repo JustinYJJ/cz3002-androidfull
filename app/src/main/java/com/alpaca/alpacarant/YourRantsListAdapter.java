@@ -14,7 +14,7 @@ import java.util.HashMap;
 /**
  * Created by justinyeo on 15/10/15.
  */
-public class ProfileListAdapter extends ArrayAdapter<HashMap<String, String>> {
+public class YourRantsListAdapter extends ArrayAdapter<HashMap<String, String>> {
     customButtonListener customListner;
 
     public interface customButtonListener {
@@ -28,7 +28,7 @@ public class ProfileListAdapter extends ArrayAdapter<HashMap<String, String>> {
     private Context context;
     private ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 
-    public ProfileListAdapter(Context context, ArrayList<HashMap<String, String>> dataItem) {
+    public YourRantsListAdapter(Context context, ArrayList<HashMap<String, String>> dataItem) {
         super(context, R.layout.profile_listview_layout, dataItem);
         this.data = dataItem;
         this.context = context;

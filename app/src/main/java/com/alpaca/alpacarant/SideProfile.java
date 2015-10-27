@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +31,7 @@ public class SideProfile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.side_settings, container, false);
+        View v = inflater.inflate(R.layout.side_profile, container, false);
 
         getCurrentUser(v);
         return v;
@@ -96,10 +94,14 @@ public class SideProfile extends Fragment {
 
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("displayname", result.getString("displayname"));
+                    map.put("about", "" + result.getString("about"));
                     mylist.add(map);
 
                     EditText editProfileName = (EditText) v.findViewById(R.id.editProfileName);
-                    editProfileName.setText(mylist.get(0).get("displayname"));
+                    editProfileName.setText("" + mylist.get(0).get("displayname"));
+
+                    EditText editDescription = (EditText) v.findViewById(R.id.editDescription);
+                    editDescription.setText("" + mylist.get(0).get("about"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
