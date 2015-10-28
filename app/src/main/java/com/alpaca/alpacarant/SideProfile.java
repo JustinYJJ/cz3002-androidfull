@@ -91,7 +91,6 @@ public class SideProfile extends Fragment {
 
                 mylist = new ArrayList<HashMap<String, String>>();
                 try {
-
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("displayname", result.getString("displayname"));
                     map.put("about", "" + result.getString("about"));
@@ -101,9 +100,34 @@ public class SideProfile extends Fragment {
                     editProfileName.setText("" + mylist.get(0).get("displayname"));
 
                     EditText editDescription = (EditText) v.findViewById(R.id.editDescription);
-                    editDescription.setText("" + mylist.get(0).get("about"));
+                    if (mylist.get(0).get("about").equals("null")){
+                        editDescription.setText("");
+                    }
+                    else {
+                        editDescription.setText("" + mylist.get(0).get("about"));
+                    }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    try {
+                        result.put("about", " ");
+
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("displayname", result.getString("displayname"));
+                        map.put("about", "" + result.getString("about"));
+                        mylist.add(map);
+
+                        EditText editProfileName = (EditText) v.findViewById(R.id.editProfileName);
+                        editProfileName.setText("" + mylist.get(0).get("displayname"));
+
+                        EditText editDescription = (EditText) v.findViewById(R.id.editDescription);
+                        if (mylist.get(0).get("about").equals("null")){
+                            editDescription.setText("");
+                        }
+                        else {
+                            editDescription.setText("" + mylist.get(0).get("about"));
+                        }
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         }
