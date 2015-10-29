@@ -15,7 +15,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -47,16 +46,30 @@ public class ReplyMessage extends ActionBarActivity {
         message.setText(hashMap.get("content"));
     }
 
+    /**
+     * Method for cancel reply button
+     * @param v View of current context
+     */
     public void onCancelReplyButtonClick(View v){
         finish();
     }
 
+    /**
+     * Method for send reply button
+     * @param v View of current context
+     */
     public void onSendReplyButtonClick(View v){
         EditText reply = (EditText) findViewById(R.id.editReply);
         sendReplyRequest(hashMap.get("sender"), reply.getText().toString(), v);
     }
 
-    private void sendReplyRequest(String sender, String s, final View v) {
+    /**
+     * Method to send a POST request for reply of message
+     * @param sender    Attribute for user to receive message
+     * @param reply         Attribute for content of reply
+     * @param v         View of current context
+     */
+    private void sendReplyRequest(String sender, String reply, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
@@ -132,9 +145,13 @@ public class ReplyMessage extends ActionBarActivity {
         }
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute(sender, s);
+        sendPostReqAsyncTask.execute(sender, reply);
     }
 
+    /**
+     * Method to send a POST reqeust for viewing message
+     * @param msgid Attribute for message id
+     */
     private void sendViewMessageRequest(String msgid) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 

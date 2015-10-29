@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -47,6 +46,10 @@ public class SideFollowings extends Fragment implements FriendListAdapter.custom
         return v;
     }
 
+    /**
+     * Method to send a GET request for followers
+     * @param v View of current context
+     */
     private void sendGetFollowersRequest(final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
 
@@ -131,6 +134,12 @@ public class SideFollowings extends Fragment implements FriendListAdapter.custom
         sendPostReqAsyncTask.execute();
     }
 
+    /**
+     * Metthod for button listener
+     * @param position  Attribute for position in list view
+     * @param value     Attribute for user information
+     * @param v         View of current context
+     */
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
         Button button1 = (Button) v.findViewById(R.id.buttonUnfollow);
@@ -152,6 +161,11 @@ public class SideFollowings extends Fragment implements FriendListAdapter.custom
         }
     }
 
+    /**
+     * Method for sending a POST request to follow friend
+     * @param name  Attribute for name of user
+     * @param v     View of current context
+     */
     private void sendFollowFriendRequest(String name, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String>{
 
@@ -233,6 +247,11 @@ public class SideFollowings extends Fragment implements FriendListAdapter.custom
         sendPostReqAsyncTask.execute(name);
     }
 
+    /**
+     * Metthod to send a POST request to unfollow friend
+     * @param username  Attribute for name of user
+     * @param v         View of current context
+     */
     private void sendUnfollowFriendRequest(String username, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String>{
 

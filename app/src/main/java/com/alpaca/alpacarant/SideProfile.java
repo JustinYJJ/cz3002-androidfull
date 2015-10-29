@@ -37,6 +37,10 @@ public class SideProfile extends Fragment {
         return v;
     }
 
+    /**
+     * Method to send a GET request for user profile
+     * @param v
+     */
     private void getCurrentUser(final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, JSONObject> {
 

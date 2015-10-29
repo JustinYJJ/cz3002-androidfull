@@ -20,8 +20,19 @@ import java.util.List;
  */
 public class SideHome extends Fragment implements OnTabChangeListener, OnPageChangeListener {
 
+    /**
+     * Attribute for tabs
+     */
     private TabHost tabHost;
+
+    /**
+     * Attribute for view pager
+     */
     private ViewPager viewPager;
+
+    /**
+     * Attribute for fragment of pages
+     */
     private MyFragmentPagerAdapter myFragmentPagerAdapter;
     int i = 0;
     View v;
@@ -68,13 +79,18 @@ public class SideHome extends Fragment implements OnTabChangeListener, OnPageCha
         tabHost.setCurrentTab(selectedItem);
     }
 
-    // viewPager Listener
+    /**
+     * viewPager Listener
+     * @param state
+     */
     @Override
     public void onPageScrollStateChanged(int state) {
 
     }
 
-    // tabHost Listener
+    /**
+     * tabHost Listener
+     */
     @Override
     public void onTabChanged(String tabId) {
 

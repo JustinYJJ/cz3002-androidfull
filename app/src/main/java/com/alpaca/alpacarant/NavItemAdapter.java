@@ -18,6 +18,12 @@ public class NavItemAdapter extends ArrayAdapter<NavItem> {
     int resLayout;
     List<NavItem> listNavItems;
 
+    /**
+     * Constructor for navigation item adapter
+     * @param context       Attribute for context
+     * @param resLayout     Attribute for res layout
+     * @param listNavItems  Attribute for list of navigation items
+     */
     public NavItemAdapter(Context context, int resLayout, List<NavItem> listNavItems) {
         super(context, resLayout, listNavItems);
 

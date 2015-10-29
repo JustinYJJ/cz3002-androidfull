@@ -9,21 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -47,6 +41,10 @@ public class MessageFriend extends ActionBarActivity {
         username.setText("To " + hashMap.get("name") + ":");
     }
 
+    /**
+     * Method for cancel message button
+     * @param v View of current context
+     */
     public void onCancelMessageButtonClick(View v){
         finish();
     }
@@ -58,6 +56,12 @@ public class MessageFriend extends ActionBarActivity {
         sendMessageRequest(message1, hashMap.get("username"), v);
     }
 
+    /**
+     * Method to send a POST request for sending a new message
+     * @param message1  Content of message
+     * @param username  User to receive message
+     * @param v         View of current context
+     */
     private void sendMessageRequest(String message1, String username, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 

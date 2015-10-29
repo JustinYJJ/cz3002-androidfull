@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class EditRant extends ActionBarActivity {
+    /**
+     * Hashmap for storing rant data attributes
+     */
     private HashMap<String, String> hashMap;
 
     @Override
@@ -41,10 +44,18 @@ public class EditRant extends ActionBarActivity {
         message.setText(hashMap.get("content"));
     }
 
+    /**
+     * Method for cancel button
+     * @param v View of current context
+     */
     public void onCancelEditButtonClick(View v){
         finish();
     }
 
+    /**
+     * Method for save button
+     * @param v View of current context
+     */
     public void onSaveButtonClick(View v){
         String rantid = hashMap.get("rantid");
 
@@ -65,6 +76,15 @@ public class EditRant extends ActionBarActivity {
         sendEditRantRequest(rantid, editedRant, viewtime, lifetime, anonymous, v);
     }
 
+    /**
+     * Method to send a POST request to edit rant
+     * @param rantid        Rant ID attribute
+     * @param editedRant    Edited rant
+     * @param viewtime      New view time
+     * @param lifetime      New life time
+     * @param annonymous    True if anonymous, else false
+     * @param v             View of current context
+     */
     private void sendEditRantRequest(final String rantid, String editedRant, String viewtime, String lifetime, String annonymous, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 

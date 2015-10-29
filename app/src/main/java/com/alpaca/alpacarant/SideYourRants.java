@@ -41,6 +41,10 @@ public class SideYourRants extends Fragment implements YourRantsListAdapter.cust
         return view;
     }
 
+    /**
+     * Method to send a GET request for all rants
+     * @param v View of current context
+     */
     private void getAllRantsRequest(final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
 
@@ -135,6 +139,12 @@ public class SideYourRants extends Fragment implements YourRantsListAdapter.cust
         sendPostReqAsyncTask.execute();
     }
 
+    /**
+     * Method for button listener
+     * @param position  Attribute for position in list view
+     * @param value     Attribute for user data
+     * @param v         View of current context
+     */
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
         if (v.getTag().toString().equals("Edit")){
@@ -148,6 +158,10 @@ public class SideYourRants extends Fragment implements YourRantsListAdapter.cust
         }
     }
 
+    /**
+     * Method to send a POST request to delete rant
+     * @param rantid    Attribute for rant id
+     */
     private void sendDeleteRantRequest(final String rantid) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, String> {
 

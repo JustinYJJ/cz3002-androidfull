@@ -14,18 +14,34 @@ public class NavItem {
         this.resIcon = resIcon;
     }
 
+    /**
+     * Accessor for title of navigation item
+     * @return  Title of navigation item
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Mutator for title of navigation item
+     * @param title Attribute for title of navigation item
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Accessor for res icon
+     * @return  Res icon
+     */
     public int getResIcon() {
         return resIcon;
     }
 
+    /**
+     * Mutator for res icon
+     * @param resIcon   Attribute for res icon
+     */
     public void setResIcon(int resIcon) {
         this.resIcon = resIcon;
     }

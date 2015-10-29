@@ -18,10 +18,17 @@ import java.util.HashMap;
 public class FriendListAdapter extends ArrayAdapter<HashMap<String, String>> {
     customButtonListener customListner;
 
+    /**
+     * Interface for custom button listener
+     */
     public interface customButtonListener {
         public void onButtonClickListner(int position, HashMap<String, String> value, View v);
     }
 
+    /**
+     * Method for custom button listener
+     * @param listener Custom button listener
+     */
     public void setCustomButtonListner(customButtonListener listener) {
         this.customListner = listener;
     }
@@ -35,6 +42,13 @@ public class FriendListAdapter extends ArrayAdapter<HashMap<String, String>> {
         this.context = context;
     }
 
+    /**
+     * Method to set list view of friend suggestions
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;

@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,10 +18,17 @@ import java.util.HashMap;
 public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
     customButtonListener customListner;
 
+    /**
+     * Interface for custom button listener
+     */
     public interface customButtonListener {
         public void onButtonClickListner(int position, HashMap<String, String> value, View v);
     }
 
+    /**
+     * Method for custom button listener
+     * @param listener Custom button listener
+     */
     public void setCustomButtonListner(customButtonListener listener) {
         this.customListner = listener;
     }
@@ -37,6 +42,13 @@ public class RantListAdapter extends ArrayAdapter<HashMap<String, String>>{
         this.context = context;
     }
 
+    /**
+     * Method to set list view of rants
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;

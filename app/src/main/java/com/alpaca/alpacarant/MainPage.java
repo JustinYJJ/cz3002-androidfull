@@ -118,6 +118,10 @@ public class MainPage extends ActionBarActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
+    /**
+     * Method for post rant button
+     * @param v View of current context
+     */
     public void onPostRantButtonClick(View v){
         String annonymous;
 
@@ -143,14 +147,13 @@ public class MainPage extends ActionBarActivity {
         sendPostRantRequest(lifetime, viewtime, annonymous, rant);
     }
 
-    public void onPostMessageButtonClick(View v){
-        EditText editRant = (EditText) findViewById(R.id.editRant);
-        String rant = editRant.getText().toString();
-        Intent intent = new Intent(getApplicationContext(), MessageFriend.class);
-        intent.putExtra("Message", rant);
-        startActivity(intent);
-    }
-
+    /**
+     * Method to sent a POST request for new rant
+     * @param lifetime      Lifetime of rant
+     * @param viewtime      Viewtime of rant
+     * @param annonymous    True if anonymous, else false
+     * @param rant          Content of rant
+     */
     private void sendPostRantRequest(String lifetime, String viewtime, String annonymous, String rant) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -244,6 +247,10 @@ public class MainPage extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * Method for change password button
+     * @param v View of current context
+     */
     public void onChangePasswordButtonClick(View v) {
         TextView oldPassword = (TextView) findViewById(R.id.textOldPassword);
         oldPassword.setVisibility(View.VISIBLE);
@@ -268,6 +275,10 @@ public class MainPage extends ActionBarActivity {
 
     }
 
+    /**
+     * Method for save profile button
+     * @param v View of current context
+     */
     public void onSaveProfileButtonClick(View v){
         EditText editName = (EditText) findViewById(R.id.editProfileName);
         String newName = editName.getText().toString();
@@ -308,6 +319,12 @@ public class MainPage extends ActionBarActivity {
         }
     }
 
+    /**
+     * Method for sending a POST request to update user profile
+     * @param newName           New name of user
+     * @param newDescription    New description of user
+     * @param v                 View of current context
+     */
     private void sendSaveProfileRequest(String newName, String newDescription, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -389,6 +406,15 @@ public class MainPage extends ActionBarActivity {
         sendPostReqAsyncTask.execute(newName, newDescription);
     }
 
+    /**
+     * Method for sending a POST request to update user profile
+     * @param newName           New name of user
+     * @param newDescription    New description of user
+     * @param oldPassword1      Old password
+     * @param newPassword1      New password
+     * @param repeatPassword1   Repeat new password
+     * @param v                 View of current context
+     */
     private void sendSaveProfileRequest(String newName, String newDescription, String oldPassword1, String newPassword1, String repeatPassword1, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 

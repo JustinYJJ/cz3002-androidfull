@@ -1,6 +1,5 @@
 package com.alpaca.alpacarant;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -34,10 +33,18 @@ public class Register extends ActionBarActivity {
         setContentView(R.layout.activity_register);
     }
 
+    /**
+     * Method for cancel button
+     * @param v View of current context
+     */
     public void onCancelButtonClick(View v){
         finish();
     }
 
+    /**
+     * Method for register button
+     * @param v View of current context
+     */
     public void onRegisterButtonClick(View v){
         editEmail           = (EditText) findViewById(R.id.textEmail);
         editName            = (EditText) findViewById(R.id.textName);
@@ -74,6 +81,12 @@ public class Register extends ActionBarActivity {
         }
     }
 
+    /**
+     * Method to send a POST request to register new account
+     * @param email     Attribute for email of user
+     * @param name      Attribute for name of user
+     * @param password  Attribute for password of user
+     */
     private void sentPostRequest(String email, String name, String password) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 

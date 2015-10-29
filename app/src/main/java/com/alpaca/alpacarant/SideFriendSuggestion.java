@@ -45,6 +45,10 @@ public class SideFriendSuggestion extends Fragment implements FriendListAdapter.
         return v;
     }
 
+    /**
+     * Attribute to send a GET request for friend suggestions
+     * @param v View of current context
+     */
     private void sendGetRequest(final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
 
@@ -129,6 +133,12 @@ public class SideFriendSuggestion extends Fragment implements FriendListAdapter.
         sendPostReqAsyncTask.execute();
     }
 
+    /**
+     * Method for button listener
+     * @param position  Attribute for postition in list view
+     * @param value     Attribute for user information
+     * @param v         View of current context
+     */
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
         Button button = (Button) v.findViewById(R.id.buttonFollow);
@@ -142,6 +152,11 @@ public class SideFriendSuggestion extends Fragment implements FriendListAdapter.
         }
     }
 
+    /**
+     * Method to send a POST request to follow friend
+     * @param name  Attribute for name of user
+     * @param v     View of current context
+     */
     private void sendFollowFriendRequest(String name, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String>{
 
@@ -221,6 +236,11 @@ public class SideFriendSuggestion extends Fragment implements FriendListAdapter.
         sendPostReqAsyncTask.execute(name);
     }
 
+    /**
+     * Method to send a POST request to unfollow friend
+     * @param username  Attribute for name of user
+     * @param v         View of current context
+     */
     private void sendUnfollowFriendRequest(String username, final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String>{
 

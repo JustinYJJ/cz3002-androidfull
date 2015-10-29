@@ -3,7 +3,6 @@ package com.alpaca.alpacarant;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +42,10 @@ public class Login extends ActionBarActivity {
 
     }
 
+    /**
+     * Method for login button
+     * @param v View of current context
+     */
     public void onLoginButtonClick(View v) {
         editUsername = (EditText) findViewById(R.id.editUsername);
         editPassword = (EditText) findViewById(R.id.editPassword);
@@ -58,6 +61,11 @@ public class Login extends ActionBarActivity {
         }
     }
 
+    /**
+     * Method to send a POST request for login verification
+     * @param username
+     * @param password
+     */
     private void sendPostRequest(final String username, final String password) {
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String>{
 
@@ -152,6 +160,10 @@ public class Login extends ActionBarActivity {
         sendPostReqAsyncTask.execute(username, password);
     }
 
+    /**
+     * Method for register button
+     * @param v View of current context
+     */
     public void onRegisterButtonClick(View v) {
         startActivity(new Intent(getApplicationContext(), Register.class));
     }

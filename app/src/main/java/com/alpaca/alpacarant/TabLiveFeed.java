@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -26,10 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +45,10 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 		return v;
 	}
 
+	/**
+	 * Method to send a GET request for all rants
+	 * @param v
+	 */
 	private void setGetRantRequest(final View v) {
 		class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
 
@@ -140,6 +141,12 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 		sendPostReqAsyncTask.execute();
 	}
 
+	/**
+	 * Method for button listener
+	 * @param position	Attribute for position in list view
+	 * @param value		Attribute for user data
+	 * @param v			View of current context
+	 */
 	@Override
 	public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
 		sendViewRantRequest(value, v, position);
@@ -153,6 +160,12 @@ public class TabLiveFeed extends Fragment implements RantListAdapter.customButto
 		button.setVisibility(View.GONE);
 	}
 
+	/**
+	 * Method to send a POST request to view rant
+	 * @param value		Attribute for rant data
+	 * @param v			View of current context
+	 * @param position	Position of rant in list view
+	 */
 	private void sendViewRantRequest(final HashMap<String, String> value, final View v, final int position) {
 		class SendPostReqAsyncTask extends AsyncTask<HashMap<String, String>, Void, String>{
 

@@ -9,19 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by justinyeo on 16/9/15.
@@ -48,6 +40,10 @@ public class TabInbox extends Fragment implements InboxListAdapter.customButtonL
         return v;
     }
 
+    /**
+     * Method to send a GET request to get all messages
+     * @param v View of current context
+     */
     private void setGetMessageRequest(final View v) {
         class SendPostReqAsyncTask extends AsyncTask<String, String, JSONArray> {
 
@@ -141,6 +137,12 @@ public class TabInbox extends Fragment implements InboxListAdapter.customButtonL
         sendPostReqAsyncTask.execute();
     }
 
+    /**
+     * Method for button listener
+     * @param position  Attribute for position in list view
+     * @param value     Attribute for user data
+     * @param v         View of current context
+     */
     @Override
     public void onButtonClickListner(int position, HashMap<String, String> value, View v) {
         Intent intent = new Intent(v.getContext(), ReplyMessage.class);
